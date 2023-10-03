@@ -10,7 +10,16 @@ public class Q557_ReverseWordsinaString3 {
         public String reverseWords(String s) {
 
             String sentence = "";
-   
+            String currentWord = "";
+            for (int i = 0; i < s.length(); i++) {
+                if (s.charAt(i) == ' ') {
+                    sentence = sentence + currentWord + " ";
+                    currentWord = "";
+                } else {
+                    currentWord = s.charAt(i) + currentWord;
+                }
+            }
+            sentence = sentence + currentWord;
             return sentence;
         }
     }
