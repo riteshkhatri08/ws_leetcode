@@ -1,4 +1,5 @@
 public class Q706_DesignHashMap {
+
     public static void main(String[] args) {
 
         String[] func = new String[] { "remove", "put", "put", "put", "put", "put", "put", "get", "put", "put" };
@@ -32,7 +33,6 @@ public class Q706_DesignHashMap {
                     break;
                 }
             }
-
         }
         result.replace(result.length() - 1, result.length(), "]");
         System.out.println(result);
