@@ -5,23 +5,30 @@ public class Q706_DesignHashMap {
         int[][] params = new int[][] { { 1, 1 }, { 2, 2 }, { 1 }, { 3 }, { 2, 1 }, { 2 }, { 2 }, { 2 } };
         MyHashMap map = new MyHashMap();
         int i = 0;
+        StringBuilder result = new StringBuilder("[");
         for (; i < func.length; i++) {
             switch (func[i]) {
                 case "put": {
                     map.put(params[i][0], params[i][1]);
+                    result.append("null, ");
                     break;
                 }
                 case "get": {
-                    map.get(params[i][0]);
+
+                    result.append(map.get(params[i][0]) + ", ");
                     break;
                 }
                 case "remove": {
+
                     map.remove(params[i][0]);
+                    result.append("null, ");
                     break;
                 }
             }
 
         }
+        result.replace(result.length()-1, result.length(), "]" );
+        System.out.println(result);
 
     }
 
