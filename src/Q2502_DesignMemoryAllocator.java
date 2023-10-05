@@ -1,31 +1,52 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class Q2502_DesignMemoryAllocator {
     public static void main(String[] args) {
 
-        String[] func = new String[] { "allocate", "allocate", "allocate", "free", "allocate", "allocate", "allocate",
-                "free", "allocate", "free" };
+        String[] func = new String[]
 
-        int[][] params = new int[][] { { 1, 1 }, { 1, 2 }, { 1, 3 }, { 2 }, { 3, 4 }, { 1, 1 }, { 1, 1 }, { 1 },
-                { 10, 2 }, { 7 } };
+        { "free", "free", "allocate", "free", "allocate", "free", "free", "allocate", "free", "allocate", "free",
+                "free", "allocate", "allocate", "free", "free", "allocate", "allocate", "free", "free", "allocate",
+                "allocate", "allocate", "allocate", "free", "allocate", "free", "free", "allocate", "allocate", "free",
+                "free", "free", "free", "free", "allocate", "allocate", "allocate", "allocate", "allocate", "free",
+                "free", "allocate", "free", "allocate", "free", "free" };
 
-        Allocator allocator = new Q2502_DesignMemoryAllocator().new Allocator(10);
+        // { "allocate", "allocate", "allocate", "free", "free", "allocate",
+        // "free", "allocate" };
+
+        // { "allocate", "allocate", "allocate", "free", "allocate", "allocate",
+        // "allocate",
+        // "free", "allocate", "free" };
+
+        int[][] params = new int[][] { { 161 }, { 62 }, { 19, 105 }, { 24 }, { 12, 128 }, { 105 }, { 24 }, { 47, 161 },
+                { 24 }, { 166, 110 }, { 110 }, { 47 }, { 107, 31 }, { 137, 79 }, { 22 }, { 22 }, { 28, 185 },
+                { 59, 106 }, { 185 }, { 110 }, { 177, 108 }, { 112, 119 }, { 185, 109 }, { 6, 159 }, { 15 },
+                { 198, 100 }, { 100 }, { 47 }, { 5, 93 }, { 188, 153 }, { 159 }, { 134 }, { 93 }, { 153 }, { 185 },
+                { 129, 58 }, { 25, 15 }, { 23, 159 }, { 50, 196 }, { 110, 101 }, { 128 }, { 4 }, { 110, 122 }, { 159 },
+                { 135, 40 }, { 110 }, { 22 } };
+
+        // { { 7, 8 }, { 8, 7 }, { 6, 2 }, { 9 }, { 8 }, { 7, 6 }, { 9 }, { 10, 9 } };
+
+        // { { 1, 1 }, { 1, 2 }, { 1, 3 }, { 2 }, { 3, 4 }, { 1, 1 }, { 1, 1 }, { 1 },
+        // { 10, 2 }, { 7 } };
+
+        Allocator allocator = new Q2502_DesignMemoryAllocator().new Allocator(168);
         int i = 0;
         StringBuilder result = new StringBuilder("[");
         for (; i < func.length; i++) {
-            System.out.println("\n\n " + func[i] + " params - " + params[i][0] );
+            System.out.print("\n\n " + func[i]);
 
             switch (func[i]) {
 
                 case "allocate": {
+                    System.out.println(" params - " + params[i][0] + "," + params[i][1]);
                     result.append(allocator.allocate(params[i][0], params[i][1]) + ", ");
                     break;
                 }
                 case "free": {
-
+                    System.out.println(" params - " + params[i][0]);
                     result.append(allocator.free(params[i][0]) + ", ");
                     break;
                 }
@@ -103,57 +124,8 @@ public class Q2502_DesignMemoryAllocator {
             if (occupiedBlocksMap.containsKey(mID)) {
                 // ADD in sorted order
                 List<Block> mappedBlocksList = occupiedBlocksMap.get(mID);
-                int index = 0;
-                while (index < mappedBlocksList.size() && mappedBlocksList.get(index).startAddr < newBlock.startAddr) {
-                    index++;
-                }
 
-                // Combine reserved blocks
-                // If insert at first postion
-                if (index == 0) {
-                    Block currentBlock = mappedBlocksList.get(index);
-                    if ((newBlock.startAddr + newBlock.size) == currentBlock.startAddr) {
-                        // merge
-                        currentBlock.startAddr = newBlock.startAddr;
-                        currentBlock.size = currentBlock.size + newBlock.size;
-                    } else {
-                        // add at 0th position
-                        mappedBlocksList.add(index, newBlock);
-                    }
-                } else if (index == mappedBlocksList.size()) {
-                    // Insert at Last Postion
-                    Block prevBlock = mappedBlocksList.get(index - 1);
-                    if (prevBlock.startAddr + prevBlock.size == newBlock.startAddr) {
-                        prevBlock.size = prevBlock.size + newBlock.size;
-                    } else {
-                        mappedBlocksList.add(newBlock);
-                    }
-                } else {
-                    // Insert between 2 blocks
-                    Block prevBlock = mappedBlocksList.get(index - 1);
-                    Block currentBlock = mappedBlocksList.get(index);
-
-                    if ((prevBlock.startAddr + prevBlock.size == newBlock.startAddr)
-                            && (newBlock.startAddr + newBlock.size == currentBlock.startAddr)) {
-                        // combine prev new and current blocks
-                        prevBlock.size = prevBlock.size + newBlock.size + currentBlock.size;
-                        // Remoce current block
-                        mappedBlocksList.remove(index);
-                    } else if (prevBlock.startAddr + prevBlock.size == newBlock.startAddr) {
-                        // combines with prev block
-                        prevBlock.size = prevBlock.size + newBlock.size;
-                    } else if ((newBlock.startAddr + newBlock.size) == currentBlock.startAddr) {
-                        // Combines with block currently at index
-                        currentBlock.startAddr = newBlock.startAddr;
-                        currentBlock.size = newBlock.size + currentBlock.size;
-                    } else {
-                        // Combines with none cannot merge blocks
-                        mappedBlocksList.add(index, currentBlock);
-                    }
-
-                }
-
-                mappedBlocksList.add(index, newBlock);
+                addBlockToBlockList(newBlock, mappedBlocksList);
 
             } else {
                 // Initialise list and add first block mapped to mId
@@ -161,11 +133,96 @@ public class Q2502_DesignMemoryAllocator {
                 newBlockList.add(newBlock);
                 occupiedBlocksMap.put(mID, newBlockList);
             }
-            occupiedBlocksMap.put(mID, occupiedBlocksMap.getOrDefault(mID, Arrays.asList(newBlock)));
+            // occupiedBlocksMap.put(mID, occupiedBlocksMap.getOrDefault(mID,
+            // Arrays.asList(newBlock)));
         }
 
         public int free(int mID) {
-            return -1;
+
+            if (occupiedBlocksMap.containsKey(mID)) {
+                // Release blocks linked to mID
+                List<Block> blocksToRelease = occupiedBlocksMap.get(mID);
+                occupiedBlocksMap.remove(mID);
+
+                // Add released blocks back to memory
+                int increasedFreeMemorySize = addBlocksToMemory(blocksToRelease);
+                System.out.println(occupiedBlocksMap);
+                System.out.println("FREE BLOCKS - " + freeBlocksList);
+                return increasedFreeMemorySize;
+            } else {
+                System.out.println(occupiedBlocksMap);
+                System.out.println("FREE BLOCKS - " + freeBlocksList);
+                return 0;
+            }
+        }
+
+        private int addBlocksToMemory(List<Block> blocksToRelease) {
+            int freedMemory = 0;
+            for (Block block : blocksToRelease) {
+                freedMemory += block.size;
+                addBlockToBlockList(block, freeBlocksList);
+            }
+            return freedMemory;
+        }
+
+        private void addBlockToBlockList(Block newBlock,
+                List<Block> blockList) {
+            if (blockList.size() == 0) {
+                blockList.add(newBlock);
+                return;
+            }
+            int index = 0;
+            while (index < blockList.size() && blockList.get(index).startAddr < newBlock.startAddr) {
+                index++;
+            }
+
+            // Combine reserved blocks
+            // If insert at first postion
+            if (index == 0) {
+                Block currentBlock = blockList.get(index);
+                if ((newBlock.startAddr + newBlock.size) == currentBlock.startAddr) {
+                    // merge
+                    currentBlock.startAddr = newBlock.startAddr;
+                    currentBlock.size = currentBlock.size + newBlock.size;
+                } else {
+                    // add at 0th position
+                    blockList.add(index, newBlock);
+                }
+            } else if (index == blockList.size()) {
+                // Insert at Last Postion
+                Block prevBlock = blockList.get(index - 1);
+                if (prevBlock.startAddr + prevBlock.size == newBlock.startAddr) {
+                    // Merge with exisitng last block
+                    prevBlock.size = prevBlock.size + newBlock.size;
+                } else {
+                    // add to end of list
+                    blockList.add(newBlock);
+                }
+            } else {
+                // Insert between 2 blocks
+                Block prevBlock = blockList.get(index - 1);
+                Block currentBlock = blockList.get(index);
+
+                if ((prevBlock.startAddr + prevBlock.size == newBlock.startAddr)
+                        && (newBlock.startAddr + newBlock.size == currentBlock.startAddr)) {
+                    // combine prev new and current blocks
+                    prevBlock.size = prevBlock.size + newBlock.size + currentBlock.size;
+                    // Remoce current block
+                    blockList.remove(index);
+                } else if (prevBlock.startAddr + prevBlock.size == newBlock.startAddr) {
+                    // combines with prev block
+                    prevBlock.size = prevBlock.size + newBlock.size;
+                } else if ((newBlock.startAddr + newBlock.size) == currentBlock.startAddr) {
+                    // Combines with block currently at index
+                    currentBlock.startAddr = newBlock.startAddr;
+                    currentBlock.size = newBlock.size + currentBlock.size;
+                } else {
+                    // Combines with none cannot merge blocks
+                    blockList.add(index, newBlock);
+                }
+
+            }
+
         }
     }
 
