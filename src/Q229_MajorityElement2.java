@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Q229_MajorityElement2 {
@@ -11,7 +13,22 @@ public class Q229_MajorityElement2 {
 
     class Solution {
         public List<Integer> majorityElement(int[] nums) {
-            return null;
+            int freq = (nums.length / 3) + 1;
+
+            List<Integer> result = new ArrayList<Integer>();
+            HashMap<Integer, Integer> countMap = new HashMap<Integer, Integer>();
+            for (int a : nums) {
+
+                countMap.put(a, countMap.getOrDefault(a, 0) + 1);
+                if (countMap.get(a) == freq) {
+                    result.add(a);
+                    if (result.size() == 2) {
+                        return result;
+                    }
+                }
+
+            }
+            return result;
         }
     }
 }
