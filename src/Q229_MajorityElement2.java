@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Q229_MajorityElement2 {
@@ -13,22 +12,28 @@ public class Q229_MajorityElement2 {
 
     class Solution {
         public List<Integer> majorityElement(int[] nums) {
-            int freq = (nums.length / 3) + 1;
+            List<Integer> majorityElements = new ArrayList<Integer>();
 
-            List<Integer> result = new ArrayList<Integer>();
-            HashMap<Integer, Integer> countMap = new HashMap<Integer, Integer>();
-            for (int a : nums) {
+            // first iteration
+            int counter = 1;
+            int currentCandidate = nums[0];
 
-                countMap.put(a, countMap.getOrDefault(a, 0) + 1);
-                if (countMap.get(a) == freq) {
-                    result.add(a);
-                    if (result.size() == 2) {
-                        return result;
+            for (int i = 1; i < nums.length; i++) {
+                if (nums[i] == currentCandidate) {
+                    counter++;
+                } else {
+                    counter--;
+                    if (counter == 0) {
+                        System.out.println("RESET COUNTER  - "  + nums[i]);
+                        // Reset counter to 1
+                        counter = 1;
+                        // Change candidate
+                        currentCandidate = nums[i];
                     }
                 }
-
             }
-            return result;
+            System.out.println(currentCandidate);
+            return null;
         }
     }
 }
