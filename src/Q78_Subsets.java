@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 public class Q78_Subsets {
 
@@ -16,17 +15,18 @@ public class Q78_Subsets {
         public List<List<Integer>> subsets(int[] nums) {
             List<List<Integer>> resultSet = new ArrayList<>();
 
-            setMaker(nums, 0, resultSet, new Stack<>());
+            //! ArrayList to arraylist conversion are faster.. this is and optimizations
+            setMaker(nums, 0, resultSet, new ArrayList<>());
 
             return resultSet;
         }
 
-        public void setMaker(int[] nums, int current, List<List<Integer>> resultSet, Stack<Integer> stack) {
+        public void setMaker(int[] nums, int current, List<List<Integer>> resultSet, ArrayList<Integer> list) {
             // System.out.println("List so far "+ set);
             // Take snapshot if reached end of choices
             if (current == nums.length) {
                 // System.out.println("Adding " + set);
-                resultSet.add(new ArrayList<>(stack));
+                resultSet.add(new ArrayList<>(list));
                 // stack.push(nums[current]);
                 // resultSet.add(new ArrayList<>(stack));
                 // stack.pop();
@@ -34,12 +34,12 @@ public class Q78_Subsets {
             }
 
             // Not include current element in list so far
-            setMaker(nums, current + 1, resultSet, stack);
+            setMaker(nums, current + 1, resultSet, list);
 
             // Include current element in list so far
-            stack.push(nums[current]);
-            setMaker(nums, current + 1, resultSet, stack);
-            stack.pop();
+            list.add(nums[current]);
+            setMaker(nums, current + 1, resultSet, list);
+            list.remove(list.size() - 1);
 
         }
     }
