@@ -13,21 +13,15 @@ public class Q1535_FindTheWinnerOfArrayGame {
             int challenger = 1;
             int currentWins = 0;
 
-            while (currentWins < k) {
+            while (currentWins < k && challenger < arr.length) {
 
-                if (challenger >= arr.length) {
-                    challenger = 0;
-                }
-                if (challenger == champ) {
-                    break;
-                }
-                if (arr[champ] > arr[challenger]) {
-                    currentWins++;
-                } else {
+                if (arr[champ] < arr[challenger]) {
                     champ = challenger;
-                    currentWins = 1;
+                    currentWins = 0;
                 }
+                currentWins++;
                 challenger++;
+
             }
             return arr[champ];
         }
