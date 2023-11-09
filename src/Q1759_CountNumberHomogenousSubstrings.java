@@ -12,24 +12,26 @@ public class Q1759_CountNumberHomogenousSubstrings {
             // 2) if a substring has length n add n(n+1)/2 to total count
             // char[] chars = s.toCharArray();
 
-            long totalSoFar = 1;
+            double totalSoFar = 0;
             {
                 char[] chars = s.toCharArray();
                 s = null;
-                int prev = 0;
+                int cur = 1, prev = 0, diff = 0;
 
-                for (int cur = 1, countSoFar = 1; cur < chars.length; cur++) {
+                for (; cur < chars.length; cur++) {
 
-                    if (chars[prev] == chars[cur]) {
-                        countSoFar++;
-
-                    } else {
-                        countSoFar = 1;
+                    if (chars[prev] != chars[cur]) {
+                        diff = cur - prev;
+                        totalSoFar += (Math.pow(diff, 2) + diff) / 2;
+                        prev = cur;
                     }
 
-                    totalSoFar = totalSoFar + countSoFar;
-
                 }
+
+                diff = cur - prev;
+
+                totalSoFar += (Math.pow(diff, 2) + diff) / 2;
+
                 if (totalSoFar >= 1000000007) {
                     totalSoFar = totalSoFar % 1000000007;
                 }
