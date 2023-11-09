@@ -12,30 +12,30 @@ public class Q1759_CountNumberHomogenousSubstrings {
             // 2) if a substring has length n add n(n+1)/2 to total count
             // char[] chars = s.toCharArray();
 
-            int totalSoFar = 1;
+            long totalSoFar = 1;
             {
                 char[] chars = s.toCharArray();
                 s = null;
+                int prev = 0;
 
                 for (int cur = 1, countSoFar = 1; cur < chars.length; cur++) {
 
-                    if (chars[cur - 1] == chars[cur]) {
+                    if (chars[prev] == chars[cur]) {
                         countSoFar++;
-                        // System.out.println(countSoFar + " " + " " + totalSoFar + " " + chars[cur]);
 
                     } else {
                         countSoFar = 1;
-                        // System.out.println(countSoFar + " " + " " + totalSoFar + " " + chars[cur]);
                     }
 
                     totalSoFar = totalSoFar + countSoFar;
-                    if (totalSoFar >= 1000000007) {
-                        totalSoFar = totalSoFar % 1000000007;
-                    }
+
                 }
-                // System.gc();
+                if (totalSoFar >= 1000000007) {
+                    totalSoFar = totalSoFar % 1000000007;
+                }
+
             }
-            return totalSoFar;
+            return (int) totalSoFar;
         }
     }
 }
