@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-public class Q2928_DistributeCandiesAmongChildrenTwo {
+public class Q2929_DistributeCandiesAmongChildrenTwo {
     public static void main(String[] args) {
         var result = new Q2928_DistributeCandiesAmongChildrenOne().new Solution().distributeCandies(3, 2);
         System.out.println("ANSWER = " + result);
