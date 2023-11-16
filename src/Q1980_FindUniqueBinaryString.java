@@ -1,5 +1,3 @@
-import java.util.HashSet;
-
 public class Q1980_FindUniqueBinaryString {
 
     public static void main(String[] args) {
