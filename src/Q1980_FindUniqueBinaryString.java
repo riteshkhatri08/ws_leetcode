@@ -9,37 +9,13 @@ public class Q1980_FindUniqueBinaryString {
     }
 
     class Solution {
-        HashSet<String> set = new HashSet<String>();
-        int n;
-        String answer = "";
-
         public String findDifferentBinaryString(String[] nums) {
+            StringBuilder result = new StringBuilder();
 
-            for (String s : nums)
-                set.add(s);
+            for (int i = 0; i < nums.length; i++)
+                result.append(nums[i].charAt(i) == '0' ? '1' : '0');
 
-            n = nums.length;
-            nums = null;
-
-            helper("");
-            return answer;
-        }
-
-        private boolean helper(String binaryString) {
-            if (binaryString.length() == n) {
-                if (!set.contains(binaryString)) {
-                    answer = binaryString;
-                    return true;
-                }
-                return false;
-            }
-
-            if (helper(binaryString + "0") == false) {
-                return helper(binaryString + "1");
-            } else {
-                return true;
-            }
-
+            return new String(result);
         }
     }
 
