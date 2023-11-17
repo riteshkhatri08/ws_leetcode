@@ -8,17 +8,36 @@ public class Q1877_MinimizeMaximumPairSumArray {
 
     class Solution {
         public int minPairSum(int[] nums) {
-            Arrays.sort(nums);
-
-            int left = 0, right = nums.length - 1, maxSum = 0, cursum;
-
-            while (right > left) {
-                cursum = nums[left++] + nums[right--];
-                if (cursum > maxSum) {
-                    maxSum = cursum;
+           
+           int maxNum = 0;
+           for (int a: nums)
+            maxNum = a < maxNum? maxNum : a;
+    
+            byte [] counts =  new byte [maxNum+1];
+    
+            // count appearance of each num
+            for (int a : nums)
+                counts[a] ++;
+    
+            int maxPairSum = 0;
+            int left = 0;
+            int right = maxNum;
+            while (counts[++left] == 0)  { }
+    
+            while(left<=right){
+                maxPairSum = Math.max(maxPairSum,left+right);
+                if (counts[left] == counts[right]){
+                    while (counts[++left] == 0)  { }
+                    while (counts[--right] == 0)  { }
+                } else if (counts[left] < counts[right]) {
+                    counts[right] -= counts[left];
+                    while (counts[++left] == 0)  { }
+                } else {
+                    counts[left] -= counts[right];
+                    while (counts[--right] == 0)  { }
                 }
             }
-            return maxSum;
+            return maxPairSum;
         }
     }
 }
