@@ -1,6 +1,7 @@
 public class Q2938_SeparateBlackandWhiteBalls {
     public static void main(String[] args) {
-
+        var result = new Q2938_SeparateBlackandWhiteBalls().new Solution().minimumSteps("10110101101");
+        System.out.println("ANSWER = " + result);
     }
 
     class Solution {
@@ -8,35 +9,37 @@ public class Q2938_SeparateBlackandWhiteBalls {
 
             long swaps = 0L;
             {
-                // Store indices from of charray which have 0 on left and others on right;
-                // middle border will have -1;
+
                 char[] charray = s.toCharArray();
-                int[] indexes = new int[charray.length];
-                int zeroIndex = 0, oneIndex = indexes.length - 1, zeroCount;
+                // Track right most zero
+                int zeroIndex = charray.length - 1;
+                // Track left most one
+                int oneIndex = 0;
 
-                for (int i = 0; i < charray.length; i++) {
-                    if (charray[i] == '1') {
-                        indexes[oneIndex--] = i;
-                    } else {
-                        indexes[zeroIndex++] = i;
+                while (true) {
+
+                    // Find Left Most 1
+                    while (oneIndex < charray.length && charray[oneIndex] != '1') {
+                        oneIndex++;
                     }
-                }
 
-                zeroCount = zeroIndex;
-                zeroIndex--;
-                oneIndex = indexes.length - 1;
-                // Now zeroIndex+1 is no of zeroes
-                // and indexes[zeroIndex] points to largest index in charray which has a zero
-                // and indexes[ondeIndex] points to largest index in charray which has a 1
+                    // Find right Most zero
+                    while (zeroIndex >= 0 && charray[zeroIndex] != '0') {
+                        zeroIndex--;
+                    }
+                    System.out.println("zero=" + zeroIndex + ", one=" + oneIndex);
+                    // SWAP'EM if a 0 is present on right of 1
+                    if (zeroIndex > oneIndex) {
+                        swaps = swaps + (zeroIndex - oneIndex);
+                        zeroIndex--;
+                        oneIndex++;
+                    } else {
+                        break;
+                    }
 
-                // Swap the zeroes that are present on right side with ones that are present on
-                // left side
-                while (zeroIndex >= 0 && indexes[zeroIndex] >= zeroCount) {
-                    swaps = swaps + (indexes[zeroIndex--] - indexes[oneIndex--]);
                 }
 
             }
-
             return swaps;
         }
     }
