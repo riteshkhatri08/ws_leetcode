@@ -12,33 +12,30 @@ public class Q1887_ReductionOperationsMakeArrayElementsEqual {
 
         public int reductionOperations(int[] nums) {
 
-            int maxElement = 0;
-            // int minElementWithCount = Integer.MAX_VALUE;
-
-            // for (int a : nums) {
-            // maxElement = maxElement < a ? a : maxElement;
-            // minElementWithCount = a < minElementWithCount ? a : minElementWithCount;
-            // }
-
-            int[] bucket = new int[100001];
-            for (int a : nums) {
-                if (a > maxElement) {
-                    maxElement = a;
-                }
-                bucket[a]++;
-            }
-
-            int prev = 0;
             int ops = 0;
-            for (int i = maxElement; i > 0; i--) {
-                if (bucket[i] > 0) {
-
-                    prev = prev + bucket[i];
-                    ops = ops + prev;
-
+            {
+                int maxElement = 0;
+                int[] bucket = new int[100001];
+                for (int a : nums) {
+                    if (a > maxElement) {
+                        maxElement = a;
+                    }
+                    bucket[a]++;
                 }
+                nums = null;
+
+                int prev = 0;
+                while (maxElement > 0) {
+                    if (bucket[maxElement] > 0) {
+                        prev = prev + bucket[maxElement];
+                        ops = ops + prev;
+                    }
+                    maxElement--;
+                }
+                ops = ops - prev;
+                bucket = null;
             }
-            ops = ops - prev;
+            // System.gc();
             return ops;
         }
     }
