@@ -1,7 +1,7 @@
 public class Q2391_MinimumAmountTimeCollectGarbage {
     public static void main(String[] args) {
-        String[] garbage = new String[] {};
-        int[] travel = new int[] {};
+        String[] garbage = new String[] {"G","P","GP","GG"};
+        int[] travel = new int[] {2,4,3};
         var result = new Q2391_MinimumAmountTimeCollectGarbage().new Solution().garbageCollection(garbage, travel);
         System.out.println("ANSWER = " + result);
     }
