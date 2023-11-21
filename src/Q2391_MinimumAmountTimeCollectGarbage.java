@@ -1,7 +1,7 @@
 public class Q2391_MinimumAmountTimeCollectGarbage {
     public static void main(String[] args) {
-        String[] garbage = new String[] {"G","P","GP","GG"};
-        int[] travel = new int[] {2,4,3};
+        String[] garbage = new String[] { "G", "P", "GP", "GG" };
+        int[] travel = new int[] { 2, 4, 3 };
         var result = new Q2391_MinimumAmountTimeCollectGarbage().new Solution().garbageCollection(garbage, travel);
         System.out.println("ANSWER = " + result);
     }
@@ -22,16 +22,31 @@ public class Q2391_MinimumAmountTimeCollectGarbage {
                 i++;
 
                 collectionTime += garbage[i].length();
-                if (garbage[i].contains("G")) {
-                    maxG = i;
+                for (char c : garbage[i].toCharArray()) {
+                    switch (c) {
+                        case 'G': {
+                            maxG = i;
+                            break;
+                        }
+                        case 'M': {
+                            maxM = i;
+                            break;
+                        }
+                        case 'P': {
+                            maxP = i;
+                            break;
+                        }
+                    }
                 }
-                if (garbage[i].contains("M")) {
-                    maxM = i;
-
-                }
-                if (garbage[i].contains("P")) {
-                    maxP = i;
-                }
+                // if (garbage[i].contains("G")) {
+                // maxG = i;
+                // }
+                // if (garbage[i].contains("M")) {
+                // maxM = i;
+                // }
+                // if (garbage[i].contains("P")) {
+                // maxP = i;
+                // }
             }
             if (maxG > 0) {
                 collectionTime += travel[maxG - 1];
