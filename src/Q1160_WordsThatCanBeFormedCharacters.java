@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 public class Q1160_WordsThatCanBeFormedCharacters {
     public static void main(String[] args) {
         String[] words = new String[] { "cat", "bt", "hat", "tree" };
@@ -11,28 +9,26 @@ public class Q1160_WordsThatCanBeFormedCharacters {
 
     class Solution {
         public int countCharacters(String[] words, String chars) {
-            HashMap<Character, Integer> curcount;
-            HashMap<Character, Integer> charcount = new HashMap<Character, Integer>();
+            int[] curcount;
+            int[] charcount = new int[26];
             for (char c : chars.toCharArray()) {
-                charcount.put(c, charcount.getOrDefault(c, 0) + 1);
+                charcount[c - 'a']++;
             }
             chars = null;
             char[] curword;
             boolean flag;
             int result = 0;
+            int index = 0;
             for (String word : words) {
 
-                curcount = new HashMap<Character, Integer>();
+                curcount = new int[26];
                 curword = word.toCharArray();
                 flag = true;
+
                 for (char c : curword) {
-                    if (charcount.containsKey(c)) {
-                        curcount.put(c, curcount.getOrDefault(c, 0) + 1);
-                        if ((curcount.get(c) > charcount.get(c))) {
-                            flag = false;
-                            break;
-                        }
-                    } else {
+                    index = ((int) c) - 97;
+                    curcount[index]++;
+                    if (charcount[index] < curcount[index]) {
                         flag = false;
                         break;
                     }
