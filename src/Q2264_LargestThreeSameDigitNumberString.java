@@ -1,7 +1,7 @@
 public class Q2264_LargestThreeSameDigitNumberString {
 
     public static void main(String[] args) {
-        String num = "333333777";
+        String num = "6777133339";
         var res = new Q2264_LargestThreeSameDigitNumberString().new Solution().largestGoodInteger(num);
         System.out.println("Answer = " + res);
     }
@@ -12,12 +12,20 @@ public class Q2264_LargestThreeSameDigitNumberString {
             {
                 char[] charray = num.toCharArray();
                 num = null;
-                for (int i = 0; i < charray.length - 2; i++) {
-                    if (charray[i] == charray[i + 1] && charray[i] == charray[i + 2] && charray[i] > res) {
+                int k = charray.length - 1, j = k - 1, i = k - 2;
+
+                while (k > 1) {
+                    if (charray[k] == charray[j] && charray[j] == charray[i] && charray[i] > res) {
                         res = charray[i];
+                        if (res == '9') {
+                            break;
+                        }
                     }
+                    i--;
+                    j--;
+                    k--;
                 }
-                charray = null;
+
             }
             if (res == '/') {
                 return "";
