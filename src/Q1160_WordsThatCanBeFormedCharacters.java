@@ -12,7 +12,7 @@ public class Q1160_WordsThatCanBeFormedCharacters {
             int[] curcount;
             int[] charcount = new int[26];
             for (char c : chars.toCharArray()) {
-                charcount[c - 'a']++;
+                charcount[((int) c) - 97]++;
             }
             chars = null;
             char[] curword;
