@@ -6,7 +6,7 @@ public class Q70_ClimbingStairs {
     }
 
     class Solution {
-        int[] dp;
+        // int[] dp;
 
         public int climbStairs(int n) {
 
@@ -14,7 +14,7 @@ public class Q70_ClimbingStairs {
             // dp[0] = 1;
             // dp[1] = 1;
             int a = 1;
-            int b =1;
+            int b = 1;
             int c = 1;
             // Instead of recursive approach we can use iteration here
             for (int i = 2; i <= n; i++) {
@@ -22,9 +22,9 @@ public class Q70_ClimbingStairs {
                 // values of i in dp
                 // this will consume o(1) instead of O(n) memory
                 // dp[i] = dp[i - 1] + dp[i - 2];
-                c = a+b;
-                a=b;
-                b=c;
+                c = a + b;
+                a = b;
+                b = c;
             }
             // return climbDown(n);
             // return dp[n];
