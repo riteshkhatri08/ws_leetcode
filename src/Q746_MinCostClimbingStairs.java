@@ -57,10 +57,35 @@ public class Q746_MinCostClimbingStairs {
 
     class Solution {
         public int minCostClimbingStairs(int[] cost) {
-            for (int i = 2; i < cost.length; i++)
-                cost[i] = Math.min(cost[i - 1], cost[i - 2]) + cost[i];
+            int[] steps = new int[cost.length + 1];
+            for (int i = 2; i < cost.length; i++) {
+                if (cost[i - 1] < cost[i - 2]) {
+                    steps[i] = i - 1;
+                    cost[i] += cost[i - 1];
+                } else {
+                    steps[i] = i - 2;
+                    cost[i] += cost[i - 2];
+                }
 
-            return Math.min(cost[cost.length - 2], cost[cost.length - 1]);
+                // cost[i] = Math.min(cost[i - i], cost[i - 2]) + cost[i];
+
+            }
+            int ans = 0;
+
+            if (cost[cost.length - 1] < cost[cost.length - 2]) {
+                steps[cost.length] = cost.length - 1;
+                ans = cost[cost.length - 1];
+            } else {
+                steps[cost.length] = cost.length - 2;
+                ans = cost[cost.length - 2];
+            }
+            int pos = cost.length;
+            while (pos > 1) {
+                System.out.print(pos + ",  ");
+                pos = steps[pos];
+            }
+            System.out.println();
+            return ans;
         }
     }
 
