@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 public class Q746_MinCostClimbingStairs {
 
     public static void main(String[] args) {
@@ -58,59 +56,15 @@ public class Q746_MinCostClimbingStairs {
     }
 
     class Solution {
-
-        HashMap<Integer, Integer> minCostPathHistoryMap = new HashMap<Integer, Integer>();
-        // int minSoFar = Integer.MAX_VALUE;
-
-        public int minCostClimbingStairs(int[] costArr) {
-
-            int result = climb(-1, 0, 0, costArr);
-            return result;
-        }
-
-        private int climb(int curPosition, int curCost, int costSoFar, int[] costArr) {
-            // System.out.println(curPosition);
-            // System.out.println(minCostPathHistoryMap);
-
-            if (curPosition >= costArr.length - 2) {
-                costSoFar += costArr[curPosition];
-                // System.out.println("RETURNING = " + costSoFar);
-                // --
-                // System.out.println("=====================================================");
-                // FINAL COST on reaching top
-                return costSoFar;
+        public int minCostClimbingStairs(int[] cost) {
+            int dp[] = new int[cost.length];
+            dp[0] = cost[0];
+            dp[1] = cost[1];
+            for (int i = 2; i < cost.length; i++) {
+                dp[i] = Math.min(dp[i - 1] + cost[i], dp[i - 2] + cost[i]);
             }
-
-            if (minCostPathHistoryMap.containsKey(curPosition)) {
-                // System.out.println("minCostPathHistoryMap contains minimal cost from " +
-                // curPosition + " = "
-                // + minCostPathHistoryMap.get(curPosition));
-                // System.out.println("RETURNING FROM MAP = "
-                // + (costSoFar + minCostPathHistoryMap.get(curPosition)));
-                // --
-                return (costSoFar + minCostPathHistoryMap.get(curPosition));
-            }
-
-            // System.out.print(curPosition + " ===A==> ");
-            // Cost if 1 step is taken
-            int costA = climb(curPosition + 1, costArr[curPosition + 1], costSoFar + curCost, costArr);
-            int costCurPositiontoFinalThroughA = costA - costSoFar;
-
-            // System.out.print(curPosition + " ===B==> ");
-            // Cost if 2 steps are taken
-            int costB = climb(curPosition + 2, costArr[curPosition + 2], costSoFar + curCost, costArr);
-            int costCurPositiontoFinalThroughB = costB - costSoFar;
-            // System.out.println("curPosition = " + curPosition + " toFinalThroughA = " +
-            // costCurPositiontoFinalThroughA
-            // + ", toFinalThroughB = " + costCurPositiontoFinalThroughB);
-
-            minCostPathHistoryMap.put(curPosition,
-                    Math.min(Math.min(costCurPositiontoFinalThroughA, costCurPositiontoFinalThroughB),
-                            minCostPathHistoryMap.getOrDefault(curPosition, Integer.MAX_VALUE)));
-
-            return costA < costB ? costA : costB;
+            return Math.min(dp[cost.length - 2], dp[cost.length - 1]);
         }
-
     }
 
     /*
