@@ -47,8 +47,8 @@ public class Q661_ImageSmoother {
             // FOR HORIZONTAL MATRIX
             if (m == 0) {
                 // GET CORNERS FIRST
-                res[0][0] = Math.floorDiv(img[0][0] + img[0][1], 2);
-                res[0][n] = Math.floorDiv(img[0][n] + img[0][n - 1], 2);
+                res[0][0] = (int) ((img[0][0] + img[0][1]) / 2);
+                res[0][n] = (int) ((img[0][n] + img[0][n - 1]) / 2);
                 int left = 0, i = 1, right = 2;
                 cursum = img[0][left] + img[0][i];
                 while (i < n) {
@@ -64,12 +64,11 @@ public class Q661_ImageSmoother {
             // EDGE CASES END HERE, SO CURRENT MATRIX is 2x2 or higher
 
             // Calculate 4 Corners
-            res[0][0] = Math.floorDiv(img[0][0] + img[0][1] + img[1][0] + img[1][1], 4);
-            res[0][n] = Math.floorDiv(img[0][n] + img[0][n - 1] + img[1][n - 1] + img[1][n], 4);
-            res[m][0] = Math.floorDiv(img[m][0] + img[m - 1][0] + img[m - 1][1] + img[m][1], 4);
-            res[m][n] = Math.floorDiv(img[m][n] + img[m][n - 1] + img[m - 1][n - 1] + img[m - 1][n], 4);
+            res[0][0] = (int) ((img[0][0] + img[0][1] + img[1][0] + img[1][1]) / 4);
+            res[0][n] = (int) ((img[0][n] + img[0][n - 1] + img[1][n - 1] + img[1][n]) / 4);
+            res[m][0] = (int) ((img[m][0] + img[m - 1][0] + img[m - 1][1] + img[m][1]) / 4);
+            res[m][n] = (int) ((img[m][n] + img[m][n - 1] + img[m - 1][n - 1] + img[m - 1][n]) / 4);
 
-            int c1, c2, c3; //
             int c4, c5, c6; // FIRST ROW
             int c7, c8, c9; // SECOND ROW
             int c10, c11, c12; // SECOND LAST ROW
@@ -153,6 +152,7 @@ public class Q661_ImageSmoother {
 
             // ITERATE AND CALCULATE CENTER MATRIX
             int left = 0, j = 1, right = 2, upper = 0, i = 1, lower = 2;
+            int c1, c2, c3;
             // System.out.println("n = " + n);
 
             for (; i < m; i++) {
