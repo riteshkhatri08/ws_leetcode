@@ -7,7 +7,7 @@ public class Q2706_BuyTwoChocolates {
     }
 
     class Solution {
-        public int buyChoco(int[] prices, int money) {
+        public int buyChoco(int [] prices, int money) {
 
             {
                 int i;
