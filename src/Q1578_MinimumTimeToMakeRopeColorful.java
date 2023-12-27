@@ -50,7 +50,6 @@ public class Q1578_MinimumTimeToMakeRopeColorful {
                     // REMOVE RIGHT
                     helper(left, right + 1, timetaken + neededTime[right], ballons, neededTime);
                 }
-
             } else {
                 helper(right, right + 1, timetaken, ballons, neededTime);
             }
