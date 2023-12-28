@@ -12,61 +12,75 @@ public class Q443_StringCompression {
 
     class Solution {
         public int compress(char[] chars) {
-            int newlength = 0;
+            // int newlength = 0;
             int left = 0;
             int right = 0;
-            char[] diff = null;
             int placer = 0;
-            int d = 0;
             for (; right < chars.length; right++) {
                 if (chars[left] != chars[right]) {
-                    d = right - left;
 
-                    // print(chars);
                     // Place character first
                     chars[placer++] = chars[left];
-                    // Increment length
-                    newlength++;
-                    if (d > 1) {
-                        diff = String.valueOf(d).toCharArray();
-                        // print(diff);
-                        for (int i = 0; i < diff.length; i++) {
-                            chars[placer++] = diff[i];
-                            newlength++;
-                        }
-                    }
+
+                    placer = compressHelper(right - left, placer, chars);
+
                     left = right;
                 }
 
             }
             // Once more after exiting loop
-            d = right - left;
-
             // Place character first
             chars[placer++] = chars[left];
 
-            // Increment length
-            newlength++;
-            // print(diff);
-            // print(chars);
-            if (d > 1) {
-                diff = String.valueOf(d).toCharArray();
-                // System.out.println("STRING VALUE OF " + String.valueOf(d));
-                // print(diff);
-                for (int i = 0; i < diff.length; i++) {
-                    chars[placer++] = diff[i];
-                    newlength++;
-                }
-            }
+            placer = compressHelper(right - left, placer, chars);
 
-            return newlength;
+            // return newlength;
+            return placer;
         }
 
-        private void print(char[] diff) {
-            System.out.println("DIFF");
-            for (char c : diff) {
-                System.out.print(c + " , ");
+        private int compressHelper(int diff, int placer, char[] chars) {
+            if (diff > 999) {
+                // CHOUBAL DIGITS
+                chars[placer++] = (char) ((diff / 1000) + 48);
+                diff %= 1000;
+
+                chars[placer++] = (char) ((diff / 100) + 48);
+                diff %= 100;
+
+                // GET 10's digit
+                chars[placer++] = (char) ((diff / 10) + 48);
+
+                // GET 1's DIGIT
+                chars[placer++] = (char) ((diff % 10) + 48);
+
+            } else if (diff > 99) {
+                // TRIPLE DIGIT
+                // GET 100's digit
+                chars[placer++] = (char) ((diff / 100) + 48);
+                diff %= 100;
+
+                // GET 10's digit
+                chars[placer++] = (char) ((diff / 10) + 48);
+
+                // GET 1's DIGIT
+                chars[placer++] = (char) ((diff % 10) + 48);
+
+            } else if (diff > 9) {
+                // DOUBLE DIGIT
+
+                // GET 10's digit
+                chars[placer++] = (char) ((diff / 10) + 48);
+
+                // GET 1's DIGIT
+                chars[placer++] = (char) ((diff % 10) + 48);
+
+            } else if (diff > 1) {
+                // SINGLE DIGIT
+                chars[placer++] = (char) (diff + 48);
+
             }
+            return placer;
         }
+
     }
 }
