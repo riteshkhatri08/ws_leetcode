@@ -12,40 +12,91 @@ public class Q2385_AmountOfTimeBinaryTreetoBeInfected {
         System.out.println("ANswer = " + result);
     }
 
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
-
     class Solution {
-        HashMap<Integer, TreeNode> parentMap = new HashMap<Integer, TreeNode>();
         TreeNode patientzero = null;
 
-        public int amountOfTime(TreeNode root, int patientid) {
-            traverseTreeAndLookForPatientZero(root, patientid);
-            // System.out.println(parentMap);
-            // Now look for the node which farthest from parent Map
+        int pid = -1;
+        int mdepth = -1;
+        int pidtoroot = -1;
 
-            int time = 0;
+        public int amountOfTime(TreeNode root, int patientid) {
+            pid = patientid;
+            boolean isPresentInLeftSubtree = false;
+            int leftdepth = 0, rightdepth = 0;
+            if (root.left != null) {
+                getTreeDepth(root.left, 1);
+                leftdepth = mdepth;
+                mdepth = -1;
+                if (pidtoroot > -1) {
+                    isPresentInLeftSubtree = true;
+                }
+            }
+            if (root.right != null) {
+                getTreeDepth(root.right, 1);
+                rightdepth = mdepth;
+                mdepth = -1;
+            }
+
+            System.out.println("isPresentInLeftSubtree = " + isPresentInLeftSubtree + ", leftdepth=" + leftdepth
+                    + ", rightdepth = " + rightdepth + " pidtoroot = " + pidtoroot);
+            // Now if patient zero is root return max of left and right depth
+            if (root.val != patientid) {
+                if (isPresentInLeftSubtree) {
+                    // Look for farthest node in left tree then return max of this vs dist root +
+                    // rightDepth;
+
+                    // distance from patientzero to farthest node in right subtreee
+                    rightdepth = pidtoroot + rightdepth;
+
+                    // No look for node that is th farthest in left subtree
+                    root.right = null;
+                    leftdepth = doBfs(patientzero);
+
+                } else {
+                    leftdepth = pidtoroot + leftdepth;
+
+                    root.left = null;
+                    rightdepth = doBfs(patientzero);
+
+                }
+            }
+
+            return leftdepth > rightdepth ? leftdepth : rightdepth;
+
+        }
+
+        private void getTreeDepth(TreeNode node, int curdepth) {
+
+            if (pid == node.val) {
+                patientzero = node;
+                pidtoroot = curdepth;
+            }
+
+            if (node.left == null && node.right == null) {
+                if (curdepth > mdepth) {
+                    mdepth = curdepth;
+                }
+                return;
+            }
+            curdepth++;
+
+            if (node.left != null) {
+                node.left.parent = node;
+                getTreeDepth(node.left, curdepth);
+            }
+            if (node.right != null) {
+                node.right.parent = node;
+                getTreeDepth(node.right, curdepth);
+            }
+        }
+
+        private int doBfs(TreeNode patientzero) {
+
             int maxDist = 0;
             TreeNode current;
             ArrayDeque<TreeNode> queue = new ArrayDeque<TreeNode>();
             HashMap<Integer, Integer> distances = new HashMap<Integer, Integer>();
-            distances.put(patientid, 0);
+            distances.put(patientzero.val, 0);
             queue.add(patientzero);
 
             while (!queue.isEmpty()) {
@@ -68,11 +119,11 @@ public class Q2385_AmountOfTimeBinaryTreetoBeInfected {
                     }
                 }
 
-                if (parentMap.containsKey(current.val)) {
-                    if (!distances.containsKey(parentMap.get(current.val).val)) {
+                if (current.parent != null) {
+                    if (!distances.containsKey(current.parent.val)) {
                         // has not been visited
-                        distances.put(parentMap.get(current.val).val, distances.get(current.val) + 1);
-                        queue.add(parentMap.get(current.val));
+                        distances.put(current.parent.val, distances.get(current.val) + 1);
+                        queue.add(current.parent);
                     }
                 }
 
@@ -82,30 +133,28 @@ public class Q2385_AmountOfTimeBinaryTreetoBeInfected {
                 }
 
             }
-
-            // System.out.println(distances);
-
             return maxDist;
         }
 
-        public void traverseTreeAndLookForPatientZero(TreeNode node, int patientid) {
-            if (node.val == patientid) {
-                patientzero = node;
-            }
+    }
 
-            if (node.left == null && node.right == null) {
-                return;
-            }
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode parent;
 
-            if (node.left != null) {
-                parentMap.put(node.left.val, node);
-                traverseTreeAndLookForPatientZero(node.left, patientid);
-            }
-            if (node.right != null) {
-                parentMap.put(node.right.val, node);
-                traverseTreeAndLookForPatientZero(node.right, patientid);
-            }
+        TreeNode() {
+        }
 
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
         }
     }
 }
