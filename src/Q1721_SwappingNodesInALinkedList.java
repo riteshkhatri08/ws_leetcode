@@ -1,18 +1,17 @@
 public class Q1721_SwappingNodesInALinkedList {
+    public static void main(String[] args) {
+        var obj = new Q1721_SwappingNodesInALinkedList();
+
+        int arr[] = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+        ListNode head = obj.new ListNode();
+        addNodes(obj, head, arr);
+        head = head.next;
+
+        new Q1721_SwappingNodesInALinkedList().new Solution().reorderList(head);
+        System.out.println("ANSWER =" + obj.print(head));
+    }
 
     class Solution {
-
-        public static void main(String[] args) {
-            var obj = new Q1721_SwappingNodesInALinkedList();
-
-            int arr[] = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-            ListNode head = obj.new ListNode();
-            addNodes(obj, head, arr);
-            head = head.next;
-
-            new Q1721_SwappingNodesInALinkedList().new Solution().reorderList(head);
-            System.out.println("ANSWER =" + obj.print(head));
-        }
 
         public void reorderList(ListNode head) {
 
