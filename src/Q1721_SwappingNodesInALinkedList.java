@@ -3,55 +3,41 @@ public class Q1721_SwappingNodesInALinkedList {
         var obj = new Q1721_SwappingNodesInALinkedList();
 
         int arr[] = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+        int k = 3;
         ListNode head = obj.new ListNode();
         addNodes(obj, head, arr);
         head = head.next;
 
-        new Q1721_SwappingNodesInALinkedList().new Solution().reorderList(head);
+        new Q1721_SwappingNodesInALinkedList().new Solution().swapNodes(head, k);
         System.out.println("ANSWER =" + obj.print(head));
     }
 
     class Solution {
-
-        public void reorderList(ListNode head) {
-
-            if (head == null || head.next == null) {
-                return;
+        public ListNode swapNodes(ListNode head, int k) {
+            if (head.next == null) {
+                return head;
             }
-            ListNode pointertwo = head, pointerone = head, temp = null;
+            ListNode slow = head, fast = head, left = null;
+            // Reach k'th Node
 
-            // FIND MIDDLE
-            while (pointertwo != null && pointertwo.next != null) {
-                pointertwo = pointertwo.next.next;
-                temp = pointerone;
-                pointerone = pointerone.next;
+            while (k > 1) {
+                fast = fast.next;
+                k--;
             }
-            // Break it in the middle with middle as head for list two
-            temp.next = null;
+            // System.out.println("kth Node left= " + fast.data);
+            left = fast;
 
-            // NOW Reverse list two
-            pointertwo = null;
-            while (pointerone != null) {
-                temp = pointerone.next;
-                pointerone.next = pointertwo;
-                pointertwo = pointerone;
-                pointerone = temp;
+            // reach kth node from right;
+            while (fast.next != null) {
+                fast = fast.next;
+                slow = slow.next;
             }
-
-            // Merge both lists
-            pointerone = head;
-
-            while (pointerone.next != null) {
-                temp = pointerone.next;
-                pointerone.next = pointertwo;
-                pointerone = temp;
-                temp = pointertwo.next;
-                pointertwo.next = pointerone;
-                pointertwo = temp;
-
-            }
-            pointerone.next = pointertwo;
-
+            // right =slow;
+            // System.out.println("kth Node right= " + right.data);
+            int temp = left.val;
+            left.val = slow.val;
+            slow.val = temp;
+            return head;
         }
     }
 
